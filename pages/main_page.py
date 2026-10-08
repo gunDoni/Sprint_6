@@ -1,14 +1,10 @@
 import allure
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
 
 from locators.main_page_locators import MainPageLocators
+from pages.base_page import BasePage
 
 
-class MainPage:
-    def __init__(self, driver):
-        self.driver = driver
-
+class MainPage(BasePage):
     @allure.step("Открыть вопрос №{index} в блоке «Вопросы о важном»")
     def click_question(self, index):
         by, value = MainPageLocators.QUESTION_HEADING
@@ -23,14 +19,8 @@ class MainPage:
 
     @allure.step("Принять куки")
     def accept_cookies(self):
-        WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable(
-                MainPageLocators.COOKIE_BUTTON
-            )
-        ).click()
+        self.click(MainPageLocators.COOKIE_BUTTON)
 
     @allure.step("Нажать кнопку «Заказать»")
     def click_order_button(self, locator):
-        WebDriverWait(self.driver, 10).until(
-            expected_conditions.element_to_be_clickable(locator)
-        ).click()
+        self.click(locator)
