@@ -1,7 +1,5 @@
 import allure
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
 from locators.order_page_locators import OrderPageLocators
 from pages.base_page import BasePage
@@ -31,8 +29,7 @@ class OrderPage(BasePage):
 
     @allure.step("Выбрать станцию метро (value={num_val})")
     def select_metro(self, num_val):
-        by, value = OrderPageLocators.LIST_OF_METRO
-        self.click((by, value.format(num_val)))
+        self.click(self.format_locator(OrderPageLocators.LIST_OF_METRO, num_val))
 
     @allure.step("Заполнить первый экран формы заказа")
     def fill_form(self, name, surname, address, phone_number, num_val):
@@ -60,13 +57,11 @@ class OrderPage(BasePage):
 
     @allure.step("Выбрать срок аренды: {lease}")
     def set_lease_term(self, lease):
-        by, value = OrderPageLocators.RENT_OPTION
-        self.click((by, value.format(lease)))
+        self.click(self.format_locator(OrderPageLocators.RENT_OPTION, lease))
 
     @allure.step("Выбрать цвет: {colour}")
     def set_colour(self, colour):
-        by, value = OrderPageLocators.COLOUR_SELECT
-        self.click((by, value.format(colour)))
+        self.click(self.format_locator(OrderPageLocators.COLOUR_SELECT, colour))
 
     @allure.step("Ввести комментарий для курьера: {comment}")
     def set_comment(self, comment):
@@ -105,8 +100,5 @@ class OrderPage(BasePage):
     @allure.step("Нажать на логотип «Яндекс» и перейти на Дзен")
     def click_yandex_logo(self):
         self.click(OrderPageLocators.YANDEX_LOGO)
-        WebDriverWait(self.driver, 10).until(
-            lambda d: len(d.window_handles) > 1
-        )
-        self.driver.switch_to.window(self.driver.window_handles[-1])
-        WebDriverWait(self.driver, 10).until(EC.url_contains("dzen"))
+        self.switch_to_new_window()
+        self.wait_url_contains("dzen")

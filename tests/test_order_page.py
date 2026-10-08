@@ -1,6 +1,5 @@
 import allure
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
 
 from locators.main_page_locators import MainPageLocators
 from pages.main_page import MainPage
@@ -44,11 +43,9 @@ class TestOrderPage:
         order_page.click_scooter_logo()
 
         with allure.step("Проверить переход на главную страницу Самоката"):
-            WebDriverWait(driver, 10).until(
-                lambda d: d.current_url.rstrip("/") == BASE_URL.rstrip("/")
-            )
+            order_page.wait_url_equals(BASE_URL)
 
         order_page.click_yandex_logo()
 
         with allure.step("Проверить, что открылась главная страница Дзена"):
-            assert "dzen" in driver.current_url
+            assert "dzen" in order_page.get_current_url()

@@ -7,15 +7,13 @@ from pages.base_page import BasePage
 class MainPage(BasePage):
     @allure.step("Открыть вопрос №{index} в блоке «Вопросы о важном»")
     def click_question(self, index):
-        by, value = MainPageLocators.QUESTION_HEADING
-        value = value.format(index)
-        self.driver.find_element(by, value).click()
+        self.click(self.format_locator(MainPageLocators.QUESTION_HEADING, index))
 
     @allure.step("Получить текст ответа на вопрос №{index}")
     def get_answer_text(self, index):
-        by, value = MainPageLocators.QUESTION_PANEL
-        value = value.format(index)
-        return self.driver.find_element(by, value).text
+        return self.get_text(
+            self.format_locator(MainPageLocators.QUESTION_PANEL, index)
+        )
 
     @allure.step("Принять куки")
     def accept_cookies(self):
