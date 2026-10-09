@@ -7,7 +7,9 @@ from pages.base_page import BasePage
 class MainPage(BasePage):
     @allure.step("Открыть вопрос №{index} в блоке «Вопросы о важном»")
     def click_question(self, index):
-        self.click(self.format_locator(MainPageLocators.QUESTION_HEADING, index))
+        locator = self.format_locator(MainPageLocators.QUESTION_HEADING, index)
+        self.scroll_to_element(locator)
+        self.click(locator)
 
     @allure.step("Получить текст ответа на вопрос №{index}")
     def get_answer_text(self, index):
